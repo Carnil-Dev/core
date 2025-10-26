@@ -25,18 +25,17 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
+        with:
+          version: 8.15.1
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-        working-directory: ./npm/core
 
       - name: Build packages
         run: pnpm run build
-        working-directory: ./npm/core
 
       - name: Run tests
         run: pnpm run test
-        working-directory: ./npm/core
 
       - name: Bump version and publish
         run: |
@@ -62,7 +61,6 @@ jobs:
           git commit -m "chore: bump version to $NEW_VERSION"
           git tag "v$NEW_VERSION"
           git push origin main --tags
-        working-directory: ./npm/core
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
