@@ -6,6 +6,11 @@ var zod = require('zod');
 
 // src/errors.ts
 var CarnilError = class _CarnilError extends Error {
+  code;
+  type;
+  statusCode;
+  provider;
+  providerError;
   constructor(message, code = "UNKNOWN_ERROR", type = "CARNIL_ERROR", statusCode, provider, providerError) {
     super(message);
     this.name = "CarnilError";
@@ -50,6 +55,7 @@ var CarnilNotFoundError = class extends CarnilError {
   }
 };
 var CarnilRateLimitError = class extends CarnilError {
+  retryAfter;
   constructor(message = "Rate limit exceeded", retryAfter, provider) {
     super(message, "RATE_LIMIT_ERROR", "RATE_LIMIT_ERROR", 429, provider);
     this.name = "CarnilRateLimitError";
@@ -176,9 +182,7 @@ function handleError(error, provider) {
 
 // src/carnil.ts
 var DefaultProviderRegistry = class {
-  constructor() {
-    this.providers = /* @__PURE__ */ new Map();
-  }
+  providers = /* @__PURE__ */ new Map();
   register(name, factory) {
     this.providers.set(name, factory);
   }
@@ -208,7 +212,10 @@ var DefaultProviderRegistry = class {
     }
   }
 };
-var _Carnil = class _Carnil {
+var Carnil = class _Carnil {
+  provider;
+  config;
+  static registry = new DefaultProviderRegistry();
   constructor(config) {
     this.config = config;
     this.provider = _Carnil.registry.create(config.provider.provider, config.provider);
@@ -607,8 +614,6 @@ var _Carnil = class _Carnil {
     }
   }
 };
-_Carnil.registry = new DefaultProviderRegistry();
-var Carnil = _Carnil;
 var CustomerSchema = zod.z.object({
   id: zod.z.string(),
   email: zod.z.string().email().optional(),
