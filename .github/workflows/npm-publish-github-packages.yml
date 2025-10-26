@@ -4,8 +4,11 @@
 name: Node.js Github Package
 
 on:
-  release:
-    types: [created]
+  push:
+    branches:
+      - main
+    tags:
+      - "v*" # push tags like v1.2.3
 
 jobs:
   build:
@@ -21,6 +24,7 @@ jobs:
   publish-gpr:
     needs: build
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
     permissions:
       contents: read
       packages: write
