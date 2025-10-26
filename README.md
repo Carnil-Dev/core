@@ -24,33 +24,33 @@ npm install @carnil/core
 ## Quick Start
 
 ```typescript
-import { Carnil } from '@carnil/core';
-import { StripeProvider } from '@carnil/stripe';
+import { Carnil } from "@carnil/core";
+import { StripeProvider } from "@carnil/stripe";
 
 // Register a provider
-Carnil.registerProvider('stripe', StripeProvider);
+Carnil.registerProvider("stripe", StripeProvider);
 
 // Initialize Carnil
 const carnil = new Carnil({
   provider: {
-    provider: 'stripe',
-    apiKey: 'sk_test_...',
-    webhookSecret: 'whsec_...'
+    provider: "stripe",
+    apiKey: "sk_test_...",
+    webhookSecret: "whsec_...",
   },
-  debug: true
+  debug: true,
 });
 
 // Create a customer
 const customer = await carnil.createCustomer({
-  email: 'customer@example.com',
-  name: 'John Doe'
+  email: "customer@example.com",
+  name: "John Doe",
 });
 
 // Create a payment intent
 const paymentIntent = await carnil.createPaymentIntent({
   amount: 2000, // $20.00
-  currency: 'usd',
-  customerId: customer.data.id
+  currency: "usd",
+  customerId: customer.data.id,
 });
 ```
 
@@ -64,17 +64,17 @@ The main class for interacting with payment providers.
 
 ```typescript
 class Carnil {
-  constructor(config: CarnilConfig)
-  
+  constructor(config: CarnilConfig);
+
   // Static methods
-  static registerProvider(name: string, factory: any): void
-  static getRegisteredProviders(): string[]
-  static createProvider(name: string, config: any): CarnilProvider
-  
+  static registerProvider(name: string, factory: any): void;
+  static getRegisteredProviders(): string[];
+  static createProvider(name: string, config: any): CarnilProvider;
+
   // Instance methods
-  getProvider(): CarnilProvider
-  getConfig(): CarnilConfig
-  healthCheck(): Promise<boolean>
+  getProvider(): CarnilProvider;
+  getConfig(): CarnilConfig;
+  healthCheck(): Promise<boolean>;
 }
 ```
 
@@ -83,26 +83,26 @@ class Carnil {
 ```typescript
 // Create a customer
 const customer = await carnil.createCustomer({
-  email: 'customer@example.com',
-  name: 'John Doe',
-  metadata?: { customField: 'value' }
+  email: "customer@example.com",
+  name: "John Doe",
+  metadata: { customField: "value" },
 });
 
 // Get a customer
-const customer = await carnil.getCustomer('cus_123');
+const customer = await carnil.getCustomer("cus_123");
 
 // Update a customer
-const updatedCustomer = await carnil.updateCustomer('cus_123', {
-  name: 'Jane Doe'
+const updatedCustomer = await carnil.updateCustomer("cus_123", {
+  name: "Jane Doe",
 });
 
 // Delete a customer
-await carnil.deleteCustomer('cus_123');
+await carnil.deleteCustomer("cus_123");
 
 // List customers
 const customers = await carnil.listCustomers({
   limit: 10,
-  startingAfter: 'cus_123'
+  startingAfter: "cus_123",
 });
 ```
 
@@ -110,16 +110,16 @@ const customers = await carnil.listCustomers({
 
 ```typescript
 // List payment methods
-const paymentMethods = await carnil.listPaymentMethods('cus_123');
+const paymentMethods = await carnil.listPaymentMethods("cus_123");
 
 // Attach payment method
-const paymentMethod = await carnil.attachPaymentMethod('cus_123', 'pm_123');
+const paymentMethod = await carnil.attachPaymentMethod("cus_123", "pm_123");
 
 // Detach payment method
-await carnil.detachPaymentMethod('pm_123');
+await carnil.detachPaymentMethod("pm_123");
 
 // Set default payment method
-const defaultMethod = await carnil.setDefaultPaymentMethod('cus_123', 'pm_123');
+const defaultMethod = await carnil.setDefaultPaymentMethod("cus_123", "pm_123");
 ```
 
 ### Payment Intent Operations
@@ -128,27 +128,27 @@ const defaultMethod = await carnil.setDefaultPaymentMethod('cus_123', 'pm_123');
 // Create payment intent
 const paymentIntent = await carnil.createPaymentIntent({
   amount: 2000,
-  currency: 'usd',
-  customerId: 'cus_123',
-  paymentMethodId: 'pm_123'
+  currency: "usd",
+  customerId: "cus_123",
+  paymentMethodId: "pm_123",
 });
 
 // Get payment intent
-const paymentIntent = await carnil.getPaymentIntent('pi_123');
+const paymentIntent = await carnil.getPaymentIntent("pi_123");
 
 // Update payment intent
-const updatedIntent = await carnil.updatePaymentIntent('pi_123', {
-  amount: 3000
+const updatedIntent = await carnil.updatePaymentIntent("pi_123", {
+  amount: 3000,
 });
 
 // Confirm payment intent
-const confirmedIntent = await carnil.confirmPaymentIntent('pi_123');
+const confirmedIntent = await carnil.confirmPaymentIntent("pi_123");
 
 // Capture payment intent
-const capturedIntent = await carnil.capturePaymentIntent('pi_123', 2000);
+const capturedIntent = await carnil.capturePaymentIntent("pi_123", 2000);
 
 // Cancel payment intent
-const cancelledIntent = await carnil.cancelPaymentIntent('pi_123');
+const cancelledIntent = await carnil.cancelPaymentIntent("pi_123");
 ```
 
 ### Subscription Operations
@@ -156,21 +156,21 @@ const cancelledIntent = await carnil.cancelPaymentIntent('pi_123');
 ```typescript
 // Create subscription
 const subscription = await carnil.createSubscription({
-  customerId: 'cus_123',
-  priceId: 'price_123',
-  paymentMethodId: 'pm_123'
+  customerId: "cus_123",
+  priceId: "price_123",
+  paymentMethodId: "pm_123",
 });
 
 // Get subscription
-const subscription = await carnil.getSubscription('sub_123');
+const subscription = await carnil.getSubscription("sub_123");
 
 // Update subscription
-const updatedSubscription = await carnil.updateSubscription('sub_123', {
-  priceId: 'price_456'
+const updatedSubscription = await carnil.updateSubscription("sub_123", {
+  priceId: "price_456",
 });
 
 // Cancel subscription
-const cancelledSubscription = await carnil.cancelSubscription('sub_123');
+const cancelledSubscription = await carnil.cancelSubscription("sub_123");
 ```
 
 ### Invoice Operations
@@ -178,21 +178,23 @@ const cancelledSubscription = await carnil.cancelSubscription('sub_123');
 ```typescript
 // Create invoice
 const invoice = await carnil.createInvoice({
-  customerId: 'cus_123',
-  items: [{
-    priceId: 'price_123',
-    quantity: 1
-  }]
+  customerId: "cus_123",
+  items: [
+    {
+      priceId: "price_123",
+      quantity: 1,
+    },
+  ],
 });
 
 // Get invoice
-const invoice = await carnil.getInvoice('in_123');
+const invoice = await carnil.getInvoice("in_123");
 
 // Finalize invoice
-const finalizedInvoice = await carnil.finalizeInvoice('in_123');
+const finalizedInvoice = await carnil.finalizeInvoice("in_123");
 
 // Pay invoice
-const paidInvoice = await carnil.payInvoice('in_123', 'pm_123');
+const paidInvoice = await carnil.payInvoice("in_123", "pm_123");
 ```
 
 ### Refund Operations
@@ -200,16 +202,16 @@ const paidInvoice = await carnil.payInvoice('in_123', 'pm_123');
 ```typescript
 // Create refund
 const refund = await carnil.createRefund({
-  paymentId: 'pi_123',
+  paymentId: "pi_123",
   amount: 1000,
-  reason: 'requested_by_customer'
+  reason: "requested_by_customer",
 });
 
 // Get refund
-const refund = await carnil.getRefund('re_123');
+const refund = await carnil.getRefund("re_123");
 
 // List refunds
-const refunds = await carnil.listRefunds('pi_123');
+const refunds = await carnil.listRefunds("pi_123");
 ```
 
 ### Webhook Operations
@@ -227,25 +229,25 @@ const event = await carnil.parseWebhook(payload, signature, secret);
 ```typescript
 // Track usage
 await carnil.trackUsage({
-  customerId: 'cus_123',
-  featureId: 'api_calls',
+  customerId: "cus_123",
+  featureId: "api_calls",
   usage: 100,
-  timestamp: new Date()
+  timestamp: new Date(),
 });
 
 // Track AI usage
 await carnil.trackAIUsage({
-  customerId: 'cus_123',
-  modelId: 'gpt-4',
+  customerId: "cus_123",
+  modelId: "gpt-4",
   tokens: 1000,
-  cost: 0.02
+  cost: 0.02,
 });
 
 // Get usage metrics
-const metrics = await carnil.getUsageMetrics('cus_123', 'api_calls', 'month');
+const metrics = await carnil.getUsageMetrics("cus_123", "api_calls", "month");
 
 // Get AI usage metrics
-const aiMetrics = await carnil.getAIUsageMetrics('cus_123', 'gpt-4', 'month');
+const aiMetrics = await carnil.getAIUsageMetrics("cus_123", "gpt-4", "month");
 ```
 
 ## Types
@@ -285,7 +287,7 @@ interface Customer {
 
 interface PaymentMethod {
   id: string;
-  type: 'card' | 'bank_account' | 'paypal';
+  type: "card" | "bank_account" | "paypal";
   card?: CardDetails;
   isDefault: boolean;
   createdAt: Date;
@@ -295,7 +297,13 @@ interface PaymentIntent {
   id: string;
   amount: number;
   currency: string;
-  status: 'requires_payment_method' | 'requires_confirmation' | 'requires_action' | 'processing' | 'succeeded' | 'canceled';
+  status:
+    | "requires_payment_method"
+    | "requires_confirmation"
+    | "requires_action"
+    | "processing"
+    | "succeeded"
+    | "canceled";
   customerId?: string;
   paymentMethodId?: string;
   createdAt: Date;
@@ -305,7 +313,7 @@ interface PaymentIntent {
 interface Subscription {
   id: string;
   customerId: string;
-  status: 'active' | 'canceled' | 'incomplete' | 'past_due';
+  status: "active" | "canceled" | "incomplete" | "past_due";
   currentPeriodStart: Date;
   currentPeriodEnd: Date;
   createdAt: Date;
@@ -317,7 +325,7 @@ interface Invoice {
   customerId: string;
   amount: number;
   currency: string;
-  status: 'draft' | 'open' | 'paid' | 'void' | 'uncollectible';
+  status: "draft" | "open" | "paid" | "void" | "uncollectible";
   dueDate?: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -328,7 +336,7 @@ interface Refund {
   paymentId: string;
   amount: number;
   currency: string;
-  status: 'pending' | 'succeeded' | 'failed' | 'canceled';
+  status: "pending" | "succeeded" | "failed" | "canceled";
   reason?: string;
   createdAt: Date;
 }
@@ -350,16 +358,16 @@ import {
   CarnilNetworkError,
   CarnilTimeoutError,
   CarnilWebhookError,
-  CarnilProviderError
-} from '@carnil/core';
+  CarnilProviderError,
+} from "@carnil/core";
 
 try {
-  const customer = await carnil.createCustomer({ email: 'invalid-email' });
+  const customer = await carnil.createCustomer({ email: "invalid-email" });
 } catch (error) {
   if (error instanceof CarnilValidationError) {
-    console.error('Validation error:', error.message);
+    console.error("Validation error:", error.message);
   } else if (error instanceof CarnilAuthenticationError) {
-    console.error('Authentication error:', error.message);
+    console.error("Authentication error:", error.message);
   }
 }
 ```
@@ -369,31 +377,31 @@ try {
 The SDK uses a pluggable provider system. You can register custom providers:
 
 ```typescript
-import { CarnilProvider } from '@carnil/core';
+import { CarnilProvider } from "@carnil/core";
 
 class CustomProvider implements CarnilProvider {
-  name = 'custom';
-  
+  name = "custom";
+
   async healthCheck(): Promise<boolean> {
     // Implementation
   }
-  
+
   async createCustomer(request: CreateCustomerRequest): Promise<Customer> {
     // Implementation
   }
-  
+
   // ... other methods
 }
 
 // Register the provider
-Carnil.registerProvider('custom', CustomProvider);
+Carnil.registerProvider("custom", CustomProvider);
 
 // Use the provider
 const carnil = new Carnil({
   provider: {
-    provider: 'custom',
+    provider: "custom",
     // custom config
-  }
+  },
 });
 ```
 
