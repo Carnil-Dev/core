@@ -18,8 +18,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm ci
-      - run: npm test
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./npm/core
+      - name: Run tests
+        run: npm test
+        working-directory: ./npm/core
 
   publish-npm:
     needs: build
@@ -31,7 +35,11 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
-      - run: npm ci
-      - run: npm publish
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./npm/core
+      - name: Publish to npm
+        run: npm publish
+        working-directory: ./npm/core
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
